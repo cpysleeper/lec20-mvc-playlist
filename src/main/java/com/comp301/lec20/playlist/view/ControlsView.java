@@ -2,7 +2,6 @@ package com.comp301.lec20.playlist.view;
 
 import com.comp301.lec20.playlist.controller.Controller;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -17,7 +16,7 @@ public class ControlsView implements FXComponent {
   @Override
   public Parent render() {
     StackPane layout = new StackPane();
-    layout.setPadding(new Insets(10, 10, 10, 10));
+    layout.getStyleClass().add("controls-layout");
 
     Button shuffleButton = new Button("Shuffle");
     shuffleButton.setOnAction((ActionEvent event) -> {

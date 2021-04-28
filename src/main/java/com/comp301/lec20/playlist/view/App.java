@@ -25,11 +25,14 @@ public class App extends Application {
     View view = new View(controller);
 
     // Make scene
-    stage.setScene(new Scene(view.render()));
+    Scene scene = new Scene(view.render());
+    scene.getStylesheets().add("main.css");
+    stage.setScene(scene);
 
     // Refresh view when model changes
     model.addObserver((Model m) -> {
-      stage.setScene(new Scene(view.render()));
+      scene.setRoot(view.render());
+      stage.sizeToScene();
     });
 
     // Show the stage
