@@ -1,71 +1,79 @@
-package com.comp301.lec20.playlist.model;
+package com.comp301.a09nonograms.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+public class BoardImpl implements Board {
 
-public class ModelImpl implements Model {
-  private List<Song> songs;
-  private List<ModelObserver> observers;
+    private int[][] _board;
 
-  public ModelImpl(List<Song> songs) {
-    this.songs = new ArrayList<>(songs);
-    this.observers = new ArrayList<>();
-  }
+    public BoardImpl(Clues b) {
 
-  public ModelImpl() {
-    this.songs = new ArrayList<>();
-    this.observers = new ArrayList<>();
-  }
+        if (b == null) {
+            throw new IllegalArgumentException();
+        }
 
-  @Override
-  public Song getSong(int index) {
-    return songs.get(index);
-  }
-
-  @Override
-  public void addSong(Song song) {
-    songs.add(song);
-    notifyObservers();
-  }
-
-  @Override
-  public void removeSong(int index) {
-    songs.remove(index);
-    notifyObservers();
-  }
-
-  @Override
-  public void moveSong(int oldIndex, int newIndex) {
-    Song song = songs.remove(oldIndex);
-    songs.add(newIndex, song);
-    notifyObservers();
-  }
-
-  @Override
-  public void shuffleSongs() {
-    Collections.shuffle(songs);
-    notifyObservers();
-  }
-
-  @Override
-  public int getNumSongs() {
-    return songs.size();
-  }
-
-  @Override
-  public void addObserver(ModelObserver observer) {
-    observers.add(observer);
-  }
-
-  @Override
-  public void removeObserver(ModelObserver observer) {
-    observers.remove(observer);
-  }
-
-  private void notifyObservers() {
-    for (ModelObserver observer : observers) {
-      observer.update(this);
+        int width = b.getWidth();
+        int height = b.getHeight();
+        _board = new int[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                _board[i][j] = 0;
+            }
+        }
     }
-  }
+
+
+    @Override
+    public boolean isShaded(int row, int col) {
+        if ((row > _board[0].length) || (col > _board.length) || (col < 0) || (row < 0)) {
+            throw new IllegalArgumentException();
+        }
+        if (_board[row][col] == (1)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean isEliminated(int row, int col) {
+        if ((row > _board[0].length) || (col > _board.length) || (col < 0) || (row < 0)) {
+            throw new IllegalArgumentException();
+        }
+        if (_board[row][col] == (-1)) return true;
+        return false;
+    }
+
+    @Override
+    public boolean isSpace(int row, int col) {
+        if ((row > _board[0].length) || (col > _board.length) || (col < 0) || (row < 0)) {
+            throw new IllegalArgumentException();
+        }
+        if (_board[row][col] == (-1) || _board[row][col] == (-1)) return false;
+        return true;
+    }
+
+    @Override
+    public void toggleCellShaded(int row, int col) {
+        if ((row > _board[0].length) || (col > _board.length) || (col < 0) || (row < 0)) {
+            throw new IllegalArgumentException();
+        }
+        if (_board[row][col] == (1)) _board[row][col] = 0;
+        else if (_board[row][col] == (0)) _board[row][col] = 1;
+
+
+    }
+
+    @Override
+    public void toggleCellEliminated(int row, int col) {
+        if ((row > _board[0].length) || (col > _board.length) || (col < 0) || (row < 0)) {
+            throw new IllegalArgumentException();
+        }
+        if (_board[row][col] == (-1)) _board[row][col] = 0;
+        else if (_board[row][col] == (0)) _board[row][col] = -1;
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < _board.length; i++) {
+            for (int j = 0; i < _board[0].length; i++) {
+                _board[i][j] = 0;
+            }
+        }
+    }
 }
